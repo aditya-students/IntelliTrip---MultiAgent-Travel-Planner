@@ -1,0 +1,24 @@
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Version control
+.git
+.gitignore
+
+# Environment variables
+.env
+.env.*
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Docker
+Dockerfile
+.dockerignore
