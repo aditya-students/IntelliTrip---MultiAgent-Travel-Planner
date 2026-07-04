@@ -2,127 +2,211 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="IntelliTrip — A premium Multi-Agent AI Travel Planner that uses intelligent agents for flights, hotels, itineraries, weather, budgets, restaurants, and local experiences.">
+    <title>IntelliTrip — Multi-Agent AI Travel Planner</title>
 
-    <title>IntelliTrip</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+    <!-- Lucide Icons -->
+    <link rel="stylesheet" href="https://unpkg.com/lucide-static@latest/font/lucide.css">
+
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="/static/style.css">
 </head>
-
 <body>
 
-    <div class="page-bg">
-        <div class="gradient-circle circle-1"></div>
-        <div class="gradient-circle circle-2"></div>
-        <div class="gradient-circle circle-3"></div>
-    </div>
+    <!-- ============ BACKGROUND EFFECTS ============ -->
+    <div class="page-bg"></div>
+    <div class="gradient-blob blob-1"></div>
+    <div class="gradient-blob blob-2"></div>
+    <div class="gradient-blob blob-3"></div>
+    <canvas id="particleCanvas"></canvas>
 
-    <main class="app-container">
+    <!-- ============ NAVBAR ============ -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-logo">
+            <div class="nav-logo-icon">✈</div>
+            IntelliTrip
+        </a>
 
-        <section class="hero-section">
-            <div class="badge">
-                ✈️ IntelliTrip — A Multi-Agent Travel Planner with LangGraph
+        <div class="nav-menu" id="navMenu">
+            <a href="#hero" class="nav-link active">Home</a>
+            <a href="#planner" class="nav-link">Trip Planner</a>
+            <a href="#footer" class="nav-link">Contact</a>
+        </div>
+
+        <div class="nav-actions">
+            <button class="nav-action-btn" id="notifBtn" aria-label="Notifications">
+                🔔
+                <span class="notification-dot"></span>
+            </button>
+            <div class="nav-profile" id="profileBtn">AT</div>
+            <button class="nav-action-btn" id="darkToggle" aria-label="Toggle theme">
+                🌙
+            </button>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                ☰
+            </button>
+        </div>
+    </nav>
+
+    <!-- ============ MAIN CONTENT ============ -->
+    <main class="main-content">
+
+        <!-- ===== HERO SECTION ===== -->
+        <section class="hero-section container" id="hero">
+            <div class="hero-card glass-card">
+                <div class="hero-glow"></div>
+                <div class="hero-globe"></div>
+                <span class="hero-airplane">✈️</span>
+
+                <div class="hero-badge">
+                    <span class="pulse-dot"></span>
+                    Powered by Multi-Agent AI
+                </div>
+
+                <h1 class="hero-title">
+                    <span class="gradient-text">IntelliTrip</span>
+                </h1>
+                <p class="hero-subtitle-brand">Multi-Agent Travel Planner</p>
+
+                <p class="hero-description">
+                    Your intelligent travel companion that uses multiple AI agents to plan
+                    flights, hotels, itineraries, weather, budgets, restaurants, and local experiences.
+                </p>
+
+                <div class="hero-buttons">
+                    <a href="#planner" class="btn-primary">
+                        🚀 Start Planning
+                    </a>
+                </div>
             </div>
-
-            <h1>
-                Plan Your Perfect Trip with AI
-            </h1>
-
-            <p>
-                Search flights, discover hotels, and generate a complete travel itinerary using a multi-agent LangGraph system.
-            </p>
         </section>
 
-        <section class="planner-card">
-
-            <div class="card-header">
-                <div>
-                    <h2>Where do you want to go?</h2>
-                    <p>
-                        Example: Plan a complete 7 days Japan trip from Bangladesh under 2 lakhs.
-                    </p>
+        <!-- ===== PLANNER SECTION (Functional) ===== -->
+        <section class="planner-section container" id="planner">
+            <div class="planner-card">
+                <div class="planner-header">
+                    <div>
+                        <h2>Where do you want to go?</h2>
+                        <p>Example: Plan a complete 7 days Japan trip from India under ₹2 lakhs.</p>
+                    </div>
+                    <div class="status-pill">
+                        <span class="status-dot"></span>
+                        Online
+                    </div>
                 </div>
 
-                <div class="status-pill">
-                    <span class="status-dot"></span>
-                    Online
-                </div>
-            </div>
-
-            <div class="input-area">
-                <textarea
-                    id="userInput"
-                    placeholder="Plan a complete 7 days Japan trip including flights, hotels and sightseeing under 2 lakhs..."
-                ></textarea>
-
-                <button id="sendBtn" onclick="sendMessage()">
-                    <span id="btnText">Generate Plan</span>
-                    <span id="btnLoader" class="loader hidden"></span>
-                </button>
-            </div>
-
-            <div class="quick-prompts">
-                <button onclick="setPrompt('Plan a complete 7 days Japan trip from Bangladesh including flights, hotels and sightseeing under 2 lakhs.')">
-                    Japan Trip
-                </button>
-
-                <button onclick="setPrompt('Plan a 5 days Dubai trip from Dhaka with flights, hotels and sightseeing.')">
-                    Dubai Trip
-                </button>
-
-                <button onclick="setPrompt('Plan a 7 days Thailand trip from Bangladesh with budget hotels and sightseeing.')">
-                    Thailand Trip
-                </button>
-
-                <button onclick="setPrompt('Give me all country flight info.')">
-                    Global Flights
-                </button>
-            </div>
-
-        </section>
-
-        <section id="resultSection" class="result-section hidden">
-
-            <div class="result-header">
-                <div>
-                    <h2>Your AI Travel Plan</h2>
-                    <p id="threadInfo">Thread ID: -</p>
-                </div>
-
-                <div class="result-actions">
-                    <button class="copy-btn" onclick="copyResult()">
-                        Copy
+                <div class="input-area">
+                    <textarea
+                        id="userInput"
+                        placeholder="Plan a complete 7 days Japan trip including flights, hotels and sightseeing under 2 lakhs..."
+                    ></textarea>
+                    <button id="sendBtn" onclick="sendMessage()">
+                        <span id="btnText">Generate Plan</span>
+                        <span id="btnLoader" class="loader hidden"></span>
                     </button>
+                </div>
 
-                    <button class="download-btn" onclick="downloadPDF()">
-                        Download PDF
+                <div class="quick-prompts">
+                    <button onclick="setPrompt('Plan a complete 7 days Japan trip from India including flights, hotels and sightseeing under 2 lakhs.')">
+                        🇯🇵 Japan Trip
+                    </button>
+                    <button onclick="setPrompt('Plan a 5 days Dubai trip from India with flights, hotels and sightseeing.')">
+                        🇦🇪 Dubai Trip
+                    </button>
+                    <button onclick="setPrompt('Plan a 7 days Thailand trip from India with budget hotels and sightseeing.')">
+                        🇹🇭 Thailand Trip
+                    </button>
+                    <button onclick="setPrompt('Plan a 10 days Europe trip covering Paris, Switzerland and Italy under 3 lakhs.')">
+                        🇪🇺 Europe Trip
                     </button>
                 </div>
             </div>
 
-            <div id="pdfContent" class="pdf-content">
-                <h1 class="pdf-title">AI Travel Plan</h1>
-                <div id="resultBox" class="result-box"></div>
-            </div>
+            <!-- Result Section -->
+            <section id="resultSection" class="result-section hidden">
+                <div class="result-header">
+                    <div>
+                        <h2>Your AI Travel Plan</h2>
+                        <p id="threadInfo">Thread ID: —</p>
+                    </div>
+                    <div class="result-actions">
+                        <button class="copy-btn" onclick="copyResult()">📋 Copy</button>
+                        <button class="download-btn" onclick="downloadPDF()">📥 Download PDF</button>
+                    </div>
+                </div>
+                <div id="pdfContent" class="pdf-content">
+                    <h1 class="pdf-title">AI Travel Plan</h1>
+                    <div id="resultBox" class="result-box"></div>
+                </div>
+            </section>
 
+            <section id="errorBox" class="error-box hidden"></section>
         </section>
-
-        <section id="errorBox" class="error-box hidden"></section>
 
     </main>
 
-    <footer>
-        Built with FastAPI, LangGraph, Groq, PostgreSQL, Tavily and AviationStack
+    <!-- ============ FOOTER ============ -->
+    <footer class="site-footer" id="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="nav-logo">
+                        <div class="nav-logo-icon">✈</div>
+                        IntelliTrip
+                    </div>
+                    <p>Your intelligent travel companion powered by Multi-Agent AI. Plan smarter, travel better.</p>
+                    <div class="footer-social">
+                        <a href="https://github.com/aditya-students" aria-label="GitHub" target="_blank">🐙</a>
+                        <a href="#" aria-label="LinkedIn">💼</a>
+                        <a href="#" aria-label="Instagram">📸</a>
+                        <a href="#" aria-label="Twitter">🐦</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <div class="footer-links">
+                        <a href="#dashboard">Dashboard</a>
+                        <a href="#agents">AI Agents</a>
+                        <a href="#planner">Trip Planner</a>
+                        <a href="#destinations">Destinations</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <div class="footer-links">
+                        <a href="#">Documentation</a>
+                        <a href="#">API Reference</a>
+                        <a href="#">Travel Guides</a>
+                        <a href="#">Blog</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <div class="footer-links">
+                        <a href="#">About Us</a>
+                        <a href="#">Careers</a>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                © 2026 IntelliTrip — Built with FastAPI, LangGraph, Groq, PostgreSQL, Tavily & AviationStack
+            </div>
+        </div>
     </footer>
 
+    <!-- ============ SCRIPTS ============ -->
     <!-- Markdown Renderer -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
     <!-- PDF Download Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-    <!-- Your Custom JS -->
+    <!-- Custom JS -->
     <script src="/static/script.js"></script>
 
 </body>
